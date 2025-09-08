@@ -552,8 +552,21 @@ const PatientDetails = () => {
                               </div>
                             )}
                           </h2>
+
+                          <h2 className="h3-title">
+                            <span style={{ color: "black", fontSize: 16 }}>
+                              Disease :
+                              <span style={{ color: "#199FD9" }}>
+                                {" "}
+                                {
+                                  patientAppointmentsDetail?.patientData
+                                    ?.diseaseName
+                                }
+                              </span>
+                            </span>
+                          </h2>
                         </div>
-                        <div className="appoint-btm">
+                        <div className="appoint-btm" style={{ marginTop: -10 }}>
                           <p>
                             <img src="/images/clock-icon.svg" alt="Icon" />
                             {patientAppointmentsDetail?.patientData?.dayDate}
@@ -649,6 +662,21 @@ const PatientDetails = () => {
                                 value={
                                   patientAppointmentsDetail?.basicInformation
                                     ?.age
+                                }
+                                readOnly
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-lg-4 col-md-4 col-sm-6">
+                            <div className="formfield">
+                              <label>Disease</label>
+                              <input
+                                type="text"
+                                placeholder="26"
+                                value={
+                                  patientAppointmentsDetail?.basicInformation
+                                    ?.diseaseName
                                 }
                                 readOnly
                               />

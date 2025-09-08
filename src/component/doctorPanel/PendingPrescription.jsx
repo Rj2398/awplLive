@@ -135,6 +135,7 @@ const PendingPrescription = () => {
                             <th>S.no.</th>
                             <th>Patient Name</th>
                             <th>Symptom Upload Date</th>
+                            <th>Disease</th>
                             <th>View Details</th>
                           </tr>
                         </thead>
@@ -241,6 +242,10 @@ const PendingPrescription = () => {
                                 >
                                   {data.time}
                                 </div>
+                              </td>
+
+                              <td style={{ color: "#199FD9" }}>
+                                {data.diseaseName}
                               </td>
                               <td>
                                 <Link

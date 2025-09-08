@@ -738,6 +738,8 @@ const MyAppointments = () => {
                             <th>Gender</th>
                             <th>Phone number</th>
                             <th>Appointment date</th>
+                            <th>Disease</th>
+
                             <th>Status</th>
                             <th>Action</th>
                           </tr>
@@ -893,6 +895,10 @@ const MyAppointments = () => {
                                     {patient.datetime.split(" ")[1]}{" "}
                                     {patient.datetime.split(" ")[2]}
                                   </div>
+                                </td>
+
+                                <td style={{ color: "#199FD9" }}>
+                                  {patient.diseaseName}
                                 </td>
                                 {/* <td>
                                                                 {patient.status === 1 ? (
@@ -1156,7 +1162,7 @@ const MyAppointments = () => {
                                   </div>
                                 </td>
                                 <td style={{ color: "#199FD9" }}>
-                                  {patient.diagnosis || "-"}
+                                  {patient.diseaseName}
                                 </td>
                                 <td>
                                   <Link
@@ -1229,6 +1235,7 @@ const MyAppointments = () => {
                             <th>Gender</th>
                             <th>Phone number</th>
                             <th>Appointment date</th>
+                            <th>Disease</th>
                             <th>Action</th>
                           </tr>
                         </thead>
@@ -1374,6 +1381,9 @@ const MyAppointments = () => {
                                     {patient.datetime.split(" ")[2]}
                                   </div>
                                 </td>
+                                <td style={{ color: "#199FD9" }}>
+                                  {patient.diseaseName}
+                                </td>
                                 <td>
                                   <Link
                                     to="/patient-profile"
@@ -1428,6 +1438,7 @@ const MyAppointments = () => {
                             <th>Gender</th>
                             <th>Phone number</th>
                             <th>Appointment date</th>
+                            <th>Disease</th>
                             <th>Reason</th>
                           </tr>
                         </thead>
@@ -1568,6 +1579,10 @@ const MyAppointments = () => {
                                   {patient.datetime.split(" ")[2]}
                                 </div>
                               </td>
+
+                              <td style={{ color: "#199FD9" }}>
+                                {patient.diseaseName}
+                              </td>
                               <td style={{ color: "#199FD9" }}>
                                 {/* <Link
                                     to="/patient-profile"
@@ -1618,6 +1633,7 @@ const MyAppointments = () => {
                             <th>Gender</th>
                             <th>Phone number</th>
                             <th>Appointment date</th>
+                            <th>Disease</th>
                             {/* <th>Reason</th> */}
                           </tr>
                         </thead>
@@ -1762,6 +1778,10 @@ const MyAppointments = () => {
                                     {patient.datetime.split(" ")[1]}{" "}
                                     {patient.datetime.split(" ")[2]}
                                   </div>
+                                </td>
+
+                                <td style={{ color: "#199FD9" }}>
+                                  {patient.diseaseName}
                                 </td>
                                 {/* <td style={{ color: "#199FD9" }}>
                                   

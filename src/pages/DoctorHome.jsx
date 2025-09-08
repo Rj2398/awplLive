@@ -786,7 +786,6 @@ const DoctorHome = () => {
                                 <p className="time">{appointment.time}</p>
                                 {/* <p className="appoint-time">{convertTimeRangeTo24Hour(appointment.time)}</p> */}
                               </div>
-
                               {/* Add min-height to maintain consistent space */}
                               <div style={{ minHeight: "24px" }}>
                                 {appointment.is_referred_patient ? (
@@ -811,8 +810,16 @@ const DoctorHome = () => {
                               </div>
                               <h3 style={{ fontSize: 22 }}>
                                 {appointment.patient_name}
+                              </h3>{" "}
+                              <h3 style={{ fontSize: 22 }}>
+                                Disease:
+                                <span
+                                  style={{ color: "#199FD9", fontSize: 16 }}
+                                >
+                                  {" "}
+                                  {appointment.diseaseName}
+                                </span>
                               </h3>
-
                               {isAppointmentOngoing(
                                 appointment.date,
                                 appointment.time
@@ -852,7 +859,6 @@ const DoctorHome = () => {
                                   }}
                                 />
                               )}
-
                               {/* <input
                                 type="submit"
                                 value="Cancel"
