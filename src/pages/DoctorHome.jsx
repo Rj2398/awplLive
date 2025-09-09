@@ -636,7 +636,7 @@ const DoctorHome = () => {
                               {currentAppointment.diseaseName}
                             </td> */}
 
-                            <h3 style={{ fontSize: 15 }}>
+                            <h3 style={{ fontSize: 15, color: "#363636" }}>
                               Disease:
                               <span style={{ color: "#199FD9", fontSize: 16 }}>
                                 {" "}
@@ -650,7 +650,9 @@ const DoctorHome = () => {
                               // </p>
 
                               <p>
-                                <span style={{}}>Referred by DS Code: </span>
+                                <span style={{ color: "#363636" }}>
+                                  Referred by DS Code:{" "}
+                                </span>
                                 <span style={{ color: "#199FD9" }}>
                                   {currentAppointment.ds_code}
                                 </span>
@@ -660,7 +662,9 @@ const DoctorHome = () => {
                               //   DS Code: {currentAppointment.ds_code}
                               // </p>
                               <p style={{ marginTop: -10 }}>
-                                <span style={{}}>DS Code: </span>
+                                <span style={{ color: "#363636" }}>
+                                  DS Code:{" "}
+                                </span>
                                 <span style={{ color: "#199FD9" }}>
                                   {currentAppointment.ds_code}
                                 </span>
