@@ -631,6 +631,18 @@ const DoctorHome = () => {
                                 Referred by DS: {currentAppointment.ds_code}
                               </p>
                             )} */}
+
+                            {/* <td style={{ color: "#199FD9" }}>
+                              {currentAppointment.diseaseName}
+                            </td> */}
+
+                            <h3 style={{ fontSize: 15, color: "black" }}>
+                              Disease:
+                              <span style={{ color: "#199FD9", fontSize: 16 }}>
+                                {" "}
+                                {currentAppointment.diseaseName}
+                              </span>
+                            </h3>
                             {currentAppointment.is_referred_patient == true ? (
                               // <p style={{ color: "#199fd9" }}>
                               //   Referred by DS Code:{" "}
@@ -649,7 +661,7 @@ const DoctorHome = () => {
                               // <p style={{ color: "#199fd9" }}>
                               //   DS Code: {currentAppointment.ds_code}
                               // </p>
-                              <p>
+                              <p style={{ marginTop: -10 }}>
                                 <span style={{ color: "black" }}>
                                   DS Code:{" "}
                                 </span>
@@ -915,6 +927,7 @@ const DoctorHome = () => {
                             <th>S.no.</th>
                             <th>Patient Name</th>
                             <th>Upload Date</th>
+                            <th>Disease</th>
                             <th>View Details</th>
                           </tr>
                         </thead>
@@ -1034,12 +1047,17 @@ const DoctorHome = () => {
                                   {/* {prescription.date} */}
                                   {formatDate(prescription.date)}
                                 </div>
+
                                 <div
                                   className="time"
                                   style={{ fontSize: 16, color: "#199fd9" }}
                                 >
                                   {prescription.time}
                                 </div>
+                              </td>
+
+                              <td style={{ color: "#199FD9" }}>
+                                {prescription.diseaseName}
                               </td>
                               <td>
                                 <Link
