@@ -636,7 +636,7 @@ const DoctorHome = () => {
                               {currentAppointment.diseaseName}
                             </td> */}
 
-                            <h3 style={{ fontSize: 15, color: "black" }}>
+                            <h3 style={{ fontSize: 15 }}>
                               Disease:
                               <span style={{ color: "#199FD9", fontSize: 16 }}>
                                 {" "}
@@ -650,9 +650,7 @@ const DoctorHome = () => {
                               // </p>
 
                               <p>
-                                <span style={{ color: "black" }}>
-                                  Referred by DS Code:{" "}
-                                </span>
+                                <span style={{}}>Referred by DS Code: </span>
                                 <span style={{ color: "#199FD9" }}>
                                   {currentAppointment.ds_code}
                                 </span>
@@ -662,9 +660,7 @@ const DoctorHome = () => {
                               //   DS Code: {currentAppointment.ds_code}
                               // </p>
                               <p style={{ marginTop: -10 }}>
-                                <span style={{ color: "black" }}>
-                                  DS Code:{" "}
-                                </span>
+                                <span style={{}}>DS Code: </span>
                                 <span style={{ color: "#199FD9" }}>
                                   {currentAppointment.ds_code}
                                 </span>
@@ -802,18 +798,14 @@ const DoctorHome = () => {
                               <div style={{ minHeight: "24px" }}>
                                 {appointment.is_referred_patient ? (
                                   <p>
-                                    <span style={{ color: "black" }}>
-                                      Referred by DS Code:{" "}
-                                    </span>
+                                    <span>Referred by DS Code: </span>
                                     <span style={{ color: "#199FD9" }}>
                                       {appointment.ds_code}
                                     </span>
                                   </p>
                                 ) : (
                                   <p>
-                                    <span style={{ color: "black" }}>
-                                      DS Code:{" "}
-                                    </span>
+                                    <span style={{}}>DS Code: </span>
                                     <span style={{ color: "#199FD9" }}>
                                       {appointment.ds_code}
                                     </span>
