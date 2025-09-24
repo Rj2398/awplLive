@@ -542,7 +542,7 @@ const PatientDetails = () => {
                               ?.is_referred_patient && (
                               <div style={{ fontSize: "15px" }}>
                                 (
-                                <span style={{ color: "#363636" }}>
+                                <span style={{ color: "black" }}>
                                   DS Code:{" "}
                                 </span>
                                 <span style={{ color: "#199FD9" }}>
@@ -554,7 +554,7 @@ const PatientDetails = () => {
                           </h2>
 
                           <h2 className="h3-title">
-                            <span style={{ color: "#363636", fontSize: 16 }}>
+                            <span style={{ color: "black", fontSize: 16 }}>
                               Disease :
                               <span style={{ color: "#199FD9" }}>
                                 {" "}

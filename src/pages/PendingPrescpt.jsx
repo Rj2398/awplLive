@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Table, Button, Modal, Form, Spinner } from "react-bootstrap";
+import { Table, Button, Modal, Form, Spinner, Row, Col } from "react-bootstrap";
 import { FaPen, FaRegPlusSquare } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
@@ -900,7 +900,7 @@ const PendingPrescpt = ({ id }) => {
             <Form>
               <Form.Group className="mb-3" controlId="formMedicineName">
                 <Form.Label className="font-semibold text-gray-700">
-                  Medicine Name
+                  Medicine Name*
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -909,7 +909,7 @@ const PendingPrescpt = ({ id }) => {
                   onChange={handleEditChange}
                   list="medicineSuggestionsList"
                   disabled={true}
-                  className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                 />
                 <datalist id="medicineSuggestionsList">
                   {medicineSuggestions.map((medicine) => (
@@ -920,33 +920,10 @@ const PendingPrescpt = ({ id }) => {
                   ))}
                 </datalist>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formDosage">
-                <Form.Label className="font-semibold text-gray-700">
-                  Dosage
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  name="dosage"
-                  value={currentTreatment.dosage}
-                  onChange={handleEditChange}
-                  className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formDuration">
-                <Form.Label className="font-semibold text-gray-700">
-                  Duration
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  name="duration"
-                  value={currentTreatment.duration}
-                  onChange={handleEditChange}
-                  className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </Form.Group>
+
               <Form.Group className="mb-3" controlId="formUnit">
                 <Form.Label className="font-semibold text-gray-700">
-                  Unit
+                  Unit*
                 </Form.Label>
                 <Form.Select
                   name="unit"
@@ -964,51 +941,94 @@ const PendingPrescpt = ({ id }) => {
                   <option value="tbsp">Tablespoon (tbsp)</option>
                 </Form.Select>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formWithWater">
+              <Form.Group className="mb-3" controlId="formDosage">
                 <Form.Label className="font-semibold text-gray-700">
-                  With Water
-                </Form.Label>
-                <Form.Select
-                  name="with_water"
-                  value={currentTreatment.with_water}
-                  onChange={handleEditChange}
-                  className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select</option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formDosageFrequency">
-                <Form.Label className="font-semibold text-gray-700">
-                  Dosage Frequency
+                  Dosage*
                 </Form.Label>
                 <Form.Control
-                  type="number"
-                  name="dosage_frequency"
-                  value={currentTreatment.dosage_frequency}
+                  type="text"
+                  name="dosage"
+                  value={currentTreatment.dosage}
                   onChange={handleEditChange}
-                  className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                  placeholder="Enter dosage like 5 or 10-20"
                 />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formMealTiming">
-                <Form.Label className="font-semibold text-gray-700">
-                  Meal Timing
-                </Form.Label>
-                <Form.Select
-                  name="meal_timing"
-                  value={currentTreatment.meal_timing}
-                  onChange={handleEditChange}
-                  className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Before/After Meal</option>
-                  <option value="before">Before </option>
-                  <option value="after">After </option>
-                </Form.Select>
-              </Form.Group>
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="formWithWater">
+                    <Form.Label className="font-semibold text-gray-700">
+                      With Water*
+                    </Form.Label>
+                    <Form.Select
+                      name="with_water"
+                      value={currentTreatment.with_water}
+                      onChange={handleEditChange}
+                      className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="">Select Option</option>
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="formDosageFrequency">
+                    <Form.Label className="font-semibold text-gray-700">
+                      Frequency (Times per Day)*
+                    </Form.Label>
+                    <Form.Select
+                      name="dosage_frequency"
+                      value={currentTreatment.dosage_frequency}
+                      onChange={handleEditChange}
+                      className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="">Select Frequency</option>
+                      <option value="1">1/day</option>
+                      <option value="2">2/day</option>
+                      <option value="3">3/day</option>
+                      <option value="4">4/day</option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="formMealTiming">
+                    <Form.Label className="font-semibold text-gray-700">
+                      Before/After Meal*
+                    </Form.Label>
+                    <Form.Select
+                      name="meal_timing"
+                      value={currentTreatment.meal_timing}
+                      onChange={handleEditChange}
+                      className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="">Select Timing</option>
+                      <option value="before">Before </option>
+                      <option value="after">After </option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="formDuration">
+                    <Form.Label className="font-semibold text-gray-700">
+                      Duration*
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="duration"
+                      value={currentTreatment.duration}
+                      onChange={handleEditChange}
+                      className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                      placeholder="Enter duration like 2 or 3"
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
               <Form.Group className="mb-3" controlId="formDayTime">
                 <Form.Label className="font-semibold text-gray-700">
-                  Day Time
+                  Day Time*
                 </Form.Label>
                 <Form.Select
                   name="day_time"
@@ -1016,7 +1036,7 @@ const PendingPrescpt = ({ id }) => {
                   onChange={handleEditChange}
                   className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">Select</option>
+                  <option value="">Select Time</option>
                   <option value="morning">Morning</option>
                   <option value="morning_afternoon">Morning + Afternoon</option>
                   <option value="morning_evening">Morning + Evening</option>
@@ -1041,6 +1061,7 @@ const PendingPrescpt = ({ id }) => {
                   value={currentTreatment.remarks}
                   onChange={handleEditChange}
                   className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter remark if any"
                 />
               </Form.Group>
             </Form>
@@ -1079,7 +1100,7 @@ const PendingPrescpt = ({ id }) => {
           <Form>
             <Form.Group className="mb-3" controlId="formNewMedicineName">
               <Form.Label className="font-semibold text-gray-700">
-                Medicine Name
+                Medicine Name*
               </Form.Label>
               <Form.Select
                 name="medicine_name"
@@ -1104,33 +1125,10 @@ const PendingPrescpt = ({ id }) => {
                 )}
               </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formNewDosage">
-              <Form.Label className="font-semibold text-gray-700">
-                Dosage
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="dosage"
-                value={newTreatment.dosage}
-                onChange={handleNewChange}
-                className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formNewDuration">
-              <Form.Label className="font-semibold text-gray-700">
-                Duration
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="duration"
-                value={newTreatment.duration}
-                onChange={handleNewChange}
-                className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </Form.Group>
+
             <Form.Group className="mb-3" controlId="formNewUnit">
               <Form.Label className="font-semibold text-gray-700">
-                Unit
+                Unit*
               </Form.Label>
               <Form.Select
                 name="unit"
@@ -1148,51 +1146,101 @@ const PendingPrescpt = ({ id }) => {
                 <option value="tbsp">Tablespoon (tbsp)</option>
               </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formNewWithWater">
+            <Form.Group className="mb-3" controlId="formNewDosage">
               <Form.Label className="font-semibold text-gray-700">
-                With Water
-              </Form.Label>
-              <Form.Select
-                name="with_water"
-                value={newTreatment.with_water}
-                onChange={handleNewChange}
-                className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Select</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formNewDosageFrequency">
-              <Form.Label className="font-semibold text-gray-700">
-                Dosage Frequency
+                Dosage*
               </Form.Label>
               <Form.Control
-                type="number"
-                name="dosage_frequency"
-                value={newTreatment.dosage_frequency}
+                type="text"
+                name="dosage"
+                value={newTreatment.dosage}
                 onChange={handleNewChange}
-                className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                placeholder="Enter dosage like 5 or 10-20"
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formNewMealTiming">
-              <Form.Label className="font-semibold text-gray-700">
-                Meal Timing
-              </Form.Label>
-              <Form.Select
-                name="meal_timing"
-                value={newTreatment.meal_timing}
-                onChange={handleNewChange}
-                className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Select Before/After Meal</option>
-                <option value="before">Before </option>
-                <option value="after">After </option>
-              </Form.Select>
-            </Form.Group>
+
+            <Row className="mb-4">
+              {/* Field 1: With Water */}
+              <Col md={6}>
+                <Form.Group controlId="formNewWithWater">
+                  <Form.Label className="font-semibold text-gray-700">
+                    With Water*
+                  </Form.Label>
+                  <Form.Select
+                    name="with_water"
+                    value={newTreatment.with_water}
+                    onChange={handleNewChange}
+                    className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Select Option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+
+              {/* Field 2: Dosage Frequency */}
+              <Col md={6}>
+                <Form.Group controlId="formDosageFrequency">
+                  <Form.Label className="font-semibold text-gray-700">
+                    Frequency (Times per Day)*
+                  </Form.Label>
+                  <Form.Select
+                    name="dosage_frequency"
+                    value={newTreatment?.dosage_frequency}
+                    onChange={handleNewChange}
+                    className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Select Frequency</option>
+                    <option value="1">1/day</option>
+                    <option value="2">2/day</option>
+                    <option value="3">3/day</option>
+                    <option value="4">4/day</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row className="mb-4">
+              {/* Field 1: Before/After Meal */}
+              <Col md={6}>
+                <Form.Group controlId="formNewMealTiming">
+                  <Form.Label className="font-semibold text-gray-700">
+                    Before/After Meal*
+                  </Form.Label>
+                  <Form.Select
+                    name="meal_timing"
+                    value={newTreatment.meal_timing}
+                    onChange={handleNewChange}
+                    className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Select Timing</option>
+                    <option value="before">Before</option>
+                    <option value="after">After</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+
+              {/* Field 2: Duration */}
+              <Col md={6}>
+                <Form.Group controlId="formNewDuration">
+                  <Form.Label className="font-semibold text-gray-700">
+                    Duration*
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="duration"
+                    value={newTreatment.duration}
+                    onChange={handleNewChange}
+                    className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                    placeholder="Enter Duration like 2 or 3"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
             <Form.Group className="mb-3" controlId="formNewDayTime">
               <Form.Label className="font-semibold text-gray-700">
-                Day Time
+                Day Time*
               </Form.Label>
               <Form.Select
                 name="day_time"
@@ -1200,7 +1248,7 @@ const PendingPrescpt = ({ id }) => {
                 onChange={handleNewChange}
                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">Select</option>
+                <option value="">Select Time</option>
                 <option value="morning">Morning</option>
                 <option value="morning_afternoon">Morning + Afternoon</option>
                 <option value="morning_evening">Morning + Evening</option>
@@ -1225,6 +1273,7 @@ const PendingPrescpt = ({ id }) => {
                 value={newTreatment.remarks}
                 onChange={handleNewChange}
                 className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter remark if any"
               />
             </Form.Group>
           </Form>
