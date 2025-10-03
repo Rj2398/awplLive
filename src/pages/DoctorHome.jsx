@@ -570,7 +570,7 @@ const DoctorHome = () => {
               <div className="doc-profile-body">
                 <Link to="/UserProfile">
                   <p style={{ color: "#199FD9" }}>
-                    {user?.name || "Doctor Name"}
+                    {user?.prefixed_name || "Doctor Name"}
                   </p>
                 </Link>
               </div>

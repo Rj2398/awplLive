@@ -1,7 +1,7 @@
 //date 27-06-2025
 
 import React, { useState, useEffect, useMemo } from "react";
-import { Table, Button, Modal, Form, Spinner } from "react-bootstrap";
+import { Table, Button, Modal, Form, Spinner, Row, Col } from "react-bootstrap";
 import { FaPen, FaRegPlusSquare } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +23,7 @@ const PrescriptiveDoctor = () => {
   const navigate = useNavigate();
   const [isloading, setIsLoading] = useState(false);
   const [adviceText, setAdviceText] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const { medicineSearch: medicineSearchResults, loading2 } = useSelector(
     (state) => state.user
   );
@@ -163,6 +164,36 @@ const PrescriptiveDoctor = () => {
       [name]: value,
     }));
   };
+
+  //new changes search feature
+
+  //  a new medicine in your component by rajan date 03-10-2025
+  // This function will handle changes in the new search input
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // This function will handle selecting a medicine from the filtered list
+  const handleSelectMedicine = (medicineName) => {
+    // Update the main form state
+    handleNewChange({
+      target: {
+        name: "medicine_name",
+        value: medicineName,
+      },
+    });
+    // Optionally, clear the search term after selection
+    setSearchTerm("");
+  };
+
+  // Filter the results dynamically based on the searchTerm
+  const filteredMedicines = medicineSearchResults
+    ? medicineSearchResults.filter((medicine) =>
+        medicine.product_name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
+
+  //new changes search feature
 
   const handleUpdate = () => {
     // --- Validation Logic for Edit Medicine Modal ---
@@ -856,64 +887,64 @@ const PrescriptiveDoctor = () => {
               </div>
             )}
           </div>
-
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              marginTop: 10,
-              marginBottom: 20,
-              position: "relative", // Added for positioning the char count
-              width: "60%", // Set width here to contain both textarea and char count
-            }}
-          >
-            <h3>Advice/Suggestion/Investigation.</h3>
-            <textarea
-              style={{
-                width: "100%", // Changed to 100% to fit parent div's width
-                height: 100,
-                border: "1px solid #199FD9",
-                backgroundColor: "white",
-                maxHeight: "200px",
-                overflowY: "auto",
-                padding: "8px", // Added some padding for better aesthetics
-                boxSizing: "border-box", // Ensures padding is included in width/height
-                resize: "vertical", // Allow vertical resizing by user if desired
-              }}
-              value={adviceText}
-              onChange={(e) => {
-                // Renamed 'txt' to 'e' (common convention for event object)
-                if (e.target.value.length <= MAX_CHARS) {
-                  // Check length of the new value
-                  setAdviceText(e.target.value); // ONLY set the value if it's within limits
-                }
-                // The second setAdviceText(txt.target.value) here was redundant and problematic.
-                // It's removed to ensure the conditional logic works as intended.
-              }}
-              rows={4}
-              cols={50} // cols becomes less relevant if width is set by CSS
-              placeholder="Enter your advice, suggestion, or investigation details here..."
-              maxLength={MAX_CHARS} // *** Added: HTML attribute for character limit ***
-            ></textarea>
-
-            {/* Character Limit Display */}
+          {hasTreatments && (
             <div
               style={{
-                position: "absolute",
-                bottom: 5, // Adjust as needed for vertical position
-                right: 5, // Adjust as needed for horizontal position
-                fontSize: "0.8em", // Smaller font size
-                color: currentChars === MAX_CHARS ? "red" : "#666", // Red when limit reached
-                backgroundColor: "rgba(255, 255, 255, 0.7)", // Slight translucent background
-                padding: "2px 5px",
-                borderRadius: "3px",
-                pointerEvents: "none", // Allows clicks/interactions to pass through to textarea if needed
+                display: "flex",
+                flexDirection: "column",
+                marginTop: 10,
+                marginBottom: 20,
+                position: "relative", // Added for positioning the char count
+                width: "60%", // Set width here to contain both textarea and char count
               }}
             >
-              {currentChars}/{MAX_CHARS}
-            </div>
-          </div>
+              <h3>Advice/Suggestion/Investigation.</h3>
+              <textarea
+                style={{
+                  width: "100%", // Changed to 100% to fit parent div's width
+                  height: 100,
+                  border: "1px solid #199FD9",
+                  backgroundColor: "white",
+                  maxHeight: "200px",
+                  overflowY: "auto",
+                  padding: "8px", // Added some padding for better aesthetics
+                  boxSizing: "border-box", // Ensures padding is included in width/height
+                  resize: "vertical", // Allow vertical resizing by user if desired
+                }}
+                value={adviceText}
+                onChange={(e) => {
+                  // Renamed 'txt' to 'e' (common convention for event object)
+                  if (e.target.value.length <= MAX_CHARS) {
+                    // Check length of the new value
+                    setAdviceText(e.target.value); // ONLY set the value if it's within limits
+                  }
+                  // The second setAdviceText(txt.target.value) here was redundant and problematic.
+                  // It's removed to ensure the conditional logic works as intended.
+                }}
+                rows={4}
+                cols={50} // cols becomes less relevant if width is set by CSS
+                placeholder="Enter your advice, suggestion, or investigation details here..."
+                maxLength={MAX_CHARS} // *** Added: HTML attribute for character limit ***
+              ></textarea>
 
+              {/* Character Limit Display */}
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 5, // Adjust as needed for vertical position
+                  right: 5, // Adjust as needed for horizontal position
+                  fontSize: "0.8em", // Smaller font size
+                  color: currentChars === MAX_CHARS ? "red" : "#666", // Red when limit reached
+                  backgroundColor: "rgba(255, 255, 255, 0.7)", // Slight translucent background
+                  padding: "2px 5px",
+                  borderRadius: "3px",
+                  pointerEvents: "none", // Allows clicks/interactions to pass through to textarea if needed
+                }}
+              >
+                {currentChars}/{MAX_CHARS}
+              </div>
+            </div>
+          )}
           {hasTreatments && (
             <div className="mt-6 text-center">
               <Button className="orange-btn" onClick={handleSubmitButtonClick}>
@@ -924,7 +955,7 @@ const PrescriptiveDoctor = () => {
             </div>
           )}
 
-          {/* Edit Modal (Validation added here) */}
+          {/* Edit Modal (unchanged) */}
           <Modal show={showEditModal} onHide={handleCloseEditModal} centered>
             <Modal.Header
               closeButton
@@ -940,7 +971,7 @@ const PrescriptiveDoctor = () => {
                 <Form>
                   <Form.Group className="mb-3" controlId="formMedicineName">
                     <Form.Label className="font-semibold text-gray-700">
-                      Medicine Name
+                      Medicine Name*
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -948,8 +979,8 @@ const PrescriptiveDoctor = () => {
                       value={currentTreatment.medicine_name}
                       onChange={handleEditChange}
                       list="medicineSuggestionsList"
-                      disabled={true} // Assuming medicine name is not editable once set
-                      className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      disabled={true}
+                      className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                     />
                     <datalist id="medicineSuggestionsList">
                       {medicineSuggestions.map((medicine) => (
@@ -960,39 +991,15 @@ const PrescriptiveDoctor = () => {
                       ))}
                     </datalist>
                   </Form.Group>
-                  <Form.Group className="mb-3" controlId="formDosage">
-                    <Form.Label className="font-semibold text-gray-700">
-                      Dosage
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="dosage"
-                      value={currentTreatment.dosage}
-                      onChange={handleEditChange}
-                      className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formDuration">
-                    <Form.Label className="font-semibold text-gray-700">
-                      Duration
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="duration"
-                      value={currentTreatment.duration}
-                      onChange={handleEditChange}
-                      className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </Form.Group>
+
                   <Form.Group className="mb-3" controlId="formUnit">
                     <Form.Label className="font-semibold text-gray-700">
-                      Unit
+                      Unit*
                     </Form.Label>
                     <Form.Select
                       name="unit"
                       value={currentTreatment.unit}
                       onChange={handleEditChange}
-                      disabled={true} // Assuming unit is not editable once set
                       className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="">Select Unit</option>
@@ -1005,51 +1012,97 @@ const PrescriptiveDoctor = () => {
                       <option value="tbsp">Tablespoon (tbsp)</option>
                     </Form.Select>
                   </Form.Group>
-                  <Form.Group className="mb-3" controlId="formWithWater">
+                  <Form.Group className="mb-3" controlId="formDosage">
                     <Form.Label className="font-semibold text-gray-700">
-                      With Water
-                    </Form.Label>
-                    <Form.Select
-                      name="with_water"
-                      value={currentTreatment.with_water}
-                      onChange={handleEditChange}
-                      className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="">Select</option>
-                      <option value="Yes">Yes</option>
-                      <option value="No">No</option>
-                    </Form.Select>
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formDosageFrequency">
-                    <Form.Label className="font-semibold text-gray-700">
-                      Dosage Frequency
+                      Dosage*
                     </Form.Label>
                     <Form.Control
-                      type="number"
-                      name="dosage_frequency"
-                      value={currentTreatment.dosage_frequency}
+                      type="text"
+                      name="dosage"
+                      value={currentTreatment.dosage}
                       onChange={handleEditChange}
-                      className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                      placeholder="Enter dosage like 5 or 10-20"
                     />
                   </Form.Group>
-                  <Form.Group className="mb-3" controlId="formMealTiming">
-                    <Form.Label className="font-semibold text-gray-700">
-                      Meal Timing
-                    </Form.Label>
-                    <Form.Select
-                      name="meal_timing"
-                      value={currentTreatment.meal_timing}
-                      onChange={handleEditChange}
-                      className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="">Select Before/After Meal</option>
-                      <option value="before">Before </option>
-                      <option value="after">After </option>
-                    </Form.Select>
-                  </Form.Group>
+                  <Row className="mb-3">
+                    <Col md={6}>
+                      <Form.Group className="mb-3" controlId="formWithWater">
+                        <Form.Label className="font-semibold text-gray-700">
+                          With Water*
+                        </Form.Label>
+                        <Form.Select
+                          name="with_water"
+                          value={currentTreatment.with_water}
+                          onChange={handleEditChange}
+                          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="">Select Option</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </Form.Select>
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group
+                        className="mb-3"
+                        controlId="formDosageFrequency"
+                      >
+                        <Form.Label className="font-semibold text-gray-700">
+                          Frequency (Times per Day)*
+                        </Form.Label>
+                        <Form.Select
+                          name="dosage_frequency"
+                          value={currentTreatment.dosage_frequency}
+                          onChange={handleEditChange}
+                          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="">Select Frequency</option>
+                          <option value="1">1/day</option>
+                          <option value="2">2/day</option>
+                          <option value="3">3/day</option>
+                          <option value="4">4/day</option>
+                        </Form.Select>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row className="mb-3">
+                    <Col md={6}>
+                      <Form.Group className="mb-3" controlId="formMealTiming">
+                        <Form.Label className="font-semibold text-gray-700">
+                          Before/After Meal*
+                        </Form.Label>
+                        <Form.Select
+                          name="meal_timing"
+                          value={currentTreatment.meal_timing}
+                          onChange={handleEditChange}
+                          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="">Select Timing</option>
+                          <option value="before">Before </option>
+                          <option value="after">After </option>
+                        </Form.Select>
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group className="mb-3" controlId="formDuration">
+                        <Form.Label className="font-semibold text-gray-700">
+                          Duration*
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="duration"
+                          value={currentTreatment.duration}
+                          onChange={handleEditChange}
+                          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                          placeholder="Enter duration like 2 or 3"
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
                   <Form.Group className="mb-3" controlId="formDayTime">
                     <Form.Label className="font-semibold text-gray-700">
-                      Day Time
+                      Day Time*
                     </Form.Label>
                     <Form.Select
                       name="day_time"
@@ -1057,7 +1110,7 @@ const PrescriptiveDoctor = () => {
                       onChange={handleEditChange}
                       className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                      <option value="">Select</option>
+                      <option value="">Select Time</option>
                       <option value="morning">Morning</option>
                       <option value="morning_afternoon">
                         Morning + Afternoon
@@ -1081,30 +1134,38 @@ const PrescriptiveDoctor = () => {
                       as="textarea"
                       rows={3}
                       name="remarks"
-                      value={currentTreatment.remarks || ""}
+                      value={currentTreatment.remarks}
                       onChange={handleEditChange}
                       className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Enter remark if any"
                     />
                   </Form.Group>
                 </Form>
               )}
             </Modal.Body>
-            <Modal.Footer className="justify-content-center p-4 bg-gray-100 border-t-0 rounded-b-lg">
+            <Modal.Footer className="bg-gray-100 p-4 border-t-0 rounded-b-lg flex justify-end gap-3">
               <Button
-                onClick={handleUpdate}
-                className="orange-btn"
-                style={{ fontWeight: "600", padding: "0 42px" }}
+                variant="secondary"
+                onClick={handleCloseEditModal}
+                className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
               >
-                Update Changes
+                Cancel
+              </Button>
+              <Button
+                style={{ backgroundColor: "#F47820", borderColor: "#F47820" }}
+                onClick={handleUpdate}
+                className="px-4 py-2 rounded-md text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              >
+                Update Medicine
               </Button>
             </Modal.Footer>
           </Modal>
 
-          {/* New Row Modal (with dropdown and validation) */}
+          {/* New Medicine Modal (unchanged) */}
           <Modal show={showNewModal} onHide={handleCloseNewModal} centered>
             <Modal.Header
               closeButton
-              style={{ backgroundColor: "#199FD9", color: "#fff" }}
+              style={{ backgroundColor: "#199FD9", color: "white" }}
               className="add-new-med-close border-b-0 rounded-t-lg"
             >
               <Modal.Title className="text-xl font-bold">
@@ -1113,10 +1174,9 @@ const PrescriptiveDoctor = () => {
             </Modal.Header>
             <Modal.Body className="p-6 bg-gray-50">
               <Form>
-                {/* Medicine Name Dropdown */}
-                <Form.Group className="mb-3" controlId="formNewMedicineName">
+                {/* <Form.Group className="mb-3" controlId="formNewMedicineName">
                   <Form.Label className="font-semibold text-gray-700">
-                    Medicine Name
+                    Medicine Name*
                   </Form.Label>
                   <Form.Select
                     name="medicine_name"
@@ -1124,8 +1184,7 @@ const PrescriptiveDoctor = () => {
                     onChange={handleNewChange}
                     className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="">Select Medicine</option>{" "}
-                    {/* Default empty option */}
+                    <option value="">Select Medicine</option>
                     {medicineSearchResults &&
                     medicineSearchResults.length > 0 ? (
                       medicineSearchResults.map((medicine) => (
@@ -1142,35 +1201,73 @@ const PrescriptiveDoctor = () => {
                       </option>
                     )}
                   </Form.Select>
-                </Form.Group>
-                {/* Other fields remain unchanged */}
-                <Form.Group className="mb-3" controlId="formNewDosage">
+                </Form.Group> */}
+
+                <Form.Group className="mb-3" controlId="formNewMedicineName">
                   <Form.Label className="font-semibold text-gray-700">
-                    Dosage
+                    Medicine Name*
                   </Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="dosage"
-                    value={newTreatment.dosage}
-                    onChange={handleNewChange}
-                    className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+
+                  {/* Display the selected medicine name (from newTreatment.medicine_name) */}
+                  {newTreatment.medicine_name ? (
+                    <div className="mb-2 p-2 border border-blue-500 rounded-md bg-blue-50 flex justify-between items-center">
+                      <span> {newTreatment.medicine_name}</span>
+                      <Button
+                        variant="link"
+                        onClick={() => handleSelectMedicine("")}
+                        className="p-0 text-red-500 text-sm"
+                      >
+                        (Change)
+                      </Button>
+                    </div>
+                  ) : null}
+
+                  {/* 1. The Search Box */}
+                  {/* The input is only visible if a medicine hasn't been selected or if the user clicks "Change" */}
+                  {newTreatment.medicine_name && searchTerm === "" ? null : (
+                    <Form.Control
+                      type="text"
+                      placeholder="Search for a Medicine"
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                      className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                      // Add a small delay for search filtering if your list is huge
+                      // onKeyUp={(e) => { if (e.key === 'Enter') setSearchTerm(e.target.value); }}
+                    />
+                  )}
+
+                  {/* 2. The Search Results Dropdown List */}
+                  {/* Show results only if we have a search term and a medicine hasn't been selected */}
+                  {searchTerm && newTreatment.medicine_name === "" && (
+                    <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto mt-1">
+                      {filteredMedicines.length > 0 ? (
+                        <ul className="list-none p-0 m-0">
+                          {filteredMedicines.slice(0, 10).map((medicine) => (
+                            <li
+                              key={medicine.product_code}
+                              onClick={() =>
+                                handleSelectMedicine(medicine.product_name)
+                              }
+                              className="p-2 cursor-pointer hover:bg-blue-100"
+                            >
+                              {medicine.product_name}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <div className="p-2 text-gray-500">
+                          {searchTerm.length > 0
+                            ? "No results found."
+                            : "Start typing to search..."}
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formNewDuration">
-                  <Form.Label className="font-semibold text-gray-700">
-                    Duration (For day)
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="duration"
-                    value={newTreatment.duration}
-                    onChange={handleNewChange}
-                    className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </Form.Group>
+
                 <Form.Group className="mb-3" controlId="formNewUnit">
                   <Form.Label className="font-semibold text-gray-700">
-                    Unit
+                    Unit*
                   </Form.Label>
                   <Form.Select
                     name="unit"
@@ -1188,51 +1285,101 @@ const PrescriptiveDoctor = () => {
                     <option value="tbsp">Tablespoon (tbsp)</option>
                   </Form.Select>
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formNewWithWater">
+                <Form.Group className="mb-3" controlId="formNewDosage">
                   <Form.Label className="font-semibold text-gray-700">
-                    With Water
-                  </Form.Label>
-                  <Form.Select
-                    name="with_water"
-                    value={newTreatment.with_water}
-                    onChange={handleNewChange}
-                    className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="">Select</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                  </Form.Select>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formNewDosageFrequency">
-                  <Form.Label className="font-semibold text-gray-700">
-                    Dosage Frequency
+                    Dosage*
                   </Form.Label>
                   <Form.Control
-                    type="number"
-                    name="dosage_frequency"
-                    value={newTreatment.dosage_frequency}
+                    type="text"
+                    name="dosage"
+                    value={newTreatment.dosage}
                     onChange={handleNewChange}
-                    className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                    placeholder="Enter dosage like 5 or 10-20"
                   />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formNewMealTiming">
-                  <Form.Label className="font-semibold text-gray-700">
-                    Meal Timing
-                  </Form.Label>
-                  <Form.Select
-                    name="meal_timing"
-                    value={newTreatment.meal_timing}
-                    onChange={handleNewChange}
-                    className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="">Select Before/After Meal</option>
-                    <option value="before">Before</option>
-                    <option value="after">After</option>
-                  </Form.Select>
-                </Form.Group>
+
+                <Row className="mb-4">
+                  {/* Field 1: With Water */}
+                  <Col md={6}>
+                    <Form.Group controlId="formNewWithWater">
+                      <Form.Label className="font-semibold text-gray-700">
+                        With Water*
+                      </Form.Label>
+                      <Form.Select
+                        name="with_water"
+                        value={newTreatment.with_water}
+                        onChange={handleNewChange}
+                        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">Select Option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+
+                  {/* Field 2: Dosage Frequency */}
+                  <Col md={6}>
+                    <Form.Group controlId="formDosageFrequency">
+                      <Form.Label className="font-semibold text-gray-700">
+                        Frequency (Times per Day)*
+                      </Form.Label>
+                      <Form.Select
+                        name="dosage_frequency"
+                        value={newTreatment?.dosage_frequency}
+                        onChange={handleNewChange}
+                        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">Select Frequency</option>
+                        <option value="1">1/day</option>
+                        <option value="2">2/day</option>
+                        <option value="3">3/day</option>
+                        <option value="4">4/day</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row className="mb-4">
+                  {/* Field 1: Before/After Meal */}
+                  <Col md={6}>
+                    <Form.Group controlId="formNewMealTiming">
+                      <Form.Label className="font-semibold text-gray-700">
+                        Before/After Meal*
+                      </Form.Label>
+                      <Form.Select
+                        name="meal_timing"
+                        value={newTreatment.meal_timing}
+                        onChange={handleNewChange}
+                        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">Select Timing</option>
+                        <option value="before">Before</option>
+                        <option value="after">After</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+
+                  {/* Field 2: Duration */}
+                  <Col md={6}>
+                    <Form.Group controlId="formNewDuration">
+                      <Form.Label className="font-semibold text-gray-700">
+                        Duration*
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="duration"
+                        value={newTreatment.duration}
+                        onChange={handleNewChange}
+                        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                        placeholder="Enter Duration like 2 or 3"
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
                 <Form.Group className="mb-3" controlId="formNewDayTime">
                   <Form.Label className="font-semibold text-gray-700">
-                    Day Time
+                    Day Time*
                   </Form.Label>
                   <Form.Select
                     name="day_time"
@@ -1240,7 +1387,7 @@ const PrescriptiveDoctor = () => {
                     onChange={handleNewChange}
                     className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="">Select</option>
+                    <option value="">Select Time</option>
                     <option value="morning">Morning</option>
                     <option value="morning_afternoon">
                       Morning + Afternoon
@@ -1264,18 +1411,26 @@ const PrescriptiveDoctor = () => {
                     as="textarea"
                     rows={3}
                     name="remarks"
-                    value={newTreatment.remarks || ""}
+                    value={newTreatment.remarks}
                     onChange={handleNewChange}
                     className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter remark if any"
                   />
                 </Form.Group>
               </Form>
             </Modal.Body>
-            <Modal.Footer className="justify-content-center p-4 bg-gray-100 border-t-0 rounded-b-lg">
+            <Modal.Footer className="bg-gray-100 p-4 border-t-0 rounded-b-lg flex justify-end gap-3">
               <Button
+                variant="secondary"
+                onClick={handleCloseNewModal}
+                className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
+              >
+                Cancel
+              </Button>
+              <Button
+                style={{ backgroundColor: "#F47820", borderColor: "#F47820" }}
                 onClick={handleAddNew}
-                className="orange-btn"
-                style={{ fontWeight: "600", padding: "0 42px" }}
+                className="px-4 py-2 rounded-md text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
               >
                 Add Medicine
               </Button>

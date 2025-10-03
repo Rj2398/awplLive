@@ -66,7 +66,7 @@ const UserProfile = () => {
     if (user) {
       setProfile((prev) => ({
         ...prev,
-        fullName: user.name || "",
+        fullName: user.prefixed_name || "",
         email: user.email || "",
         phone: user.contact_no || "",
         experience: user.experience || "",

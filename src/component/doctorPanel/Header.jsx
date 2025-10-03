@@ -464,7 +464,7 @@ const Header = () => {
               />
             </div>
             <div className="doc-profile-body">
-              <p>{user?.name || "Doctor Name"}</p>
+              <p>{user?.prefixed_name || "Doctor Name"}</p>
               <Link
                 to="/UserProfile"
                 className="view-profile"

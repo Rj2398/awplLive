@@ -17,6 +17,8 @@ const PendingPrescpt = ({ id }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [isloading, setIsLoading] = useState(false);
   // NEW STATE FOR CONFIRMATION MODAL
   const [showSubmitConfirmModal, setShowSubmitConfirmModal] = useState(false);
@@ -148,7 +150,64 @@ const PendingPrescpt = ({ id }) => {
       [name]: value,
     }));
   };
+  //
+  //  a new medicine in your component by rajan date 03-10-2025
+  // This function will handle changes in the new search input
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
+  // This function will handle selecting a medicine from the filtered list
+  const handleSelectMedicine = (medicineName) => {
+    // Update the main form state
+    handleNewChange({
+      target: {
+        name: "medicine_name",
+        value: medicineName,
+      },
+    });
+    // Optionally, clear the search term after selection
+    setSearchTerm("");
+  };
+
+  // Filter the results dynamically based on the searchTerm
+  const filteredMedicines = medicineSearchResults
+    ? medicineSearchResults.filter((medicine) =>
+        medicine.product_name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
+
+  //
+
+  // Add a update in your component by rajan date 03-10-2025
+  // const [searchTermUpdate, setSearchTermUpdate] = useState("");
+  //update modal code
+  // This function will handle changes in the new search input
+  // const handleSearchChangeUpdate = (e) => {
+  //   setSearchTermUpdate(e.target.value);
+  // };
+
+  // This function will handle selecting a medicine from the filtered list
+  // const handleSelectMedicineUpdate = (medicineName) => {
+  //   // Update the main form state
+  //   handleSearchChangeUpdate({
+  //     target: {
+  //       name: "medicine_name",
+  //       value: medicineName,
+  //     },
+  //   });
+  //   // Optionally, clear the search term after selection
+  //   setSearchTermUpdate("");
+  // };
+
+  // Filter the results dynamically based on the searchTerm
+  // const filteredMedicinesUpdate = medicineSearchResults
+  //   ? medicineSearchResults.filter((medicine) =>
+  //       medicine.product_name.toLowerCase().includes(searchTerm.toLowerCase())
+  //     )
+  //   : [];
+
+  ///
   const handleUpdate = () => {
     let isValid = true;
     const requiredFields = [
@@ -444,7 +503,7 @@ const PendingPrescpt = ({ id }) => {
       })),
     };
 
-    // console.log("Submitting data to API:", payload);
+    console.log("Submitting data to API:", payload);
 
     try {
       const response = await axios.post(
@@ -817,63 +876,64 @@ const PendingPrescpt = ({ id }) => {
           </div>
         )}
       </div>
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          marginTop: 10,
-          marginBottom: 20,
-          position: "relative", // Added for positioning the char count
-          width: "60%", // Set width here to contain both textarea and char count
-        }}
-      >
-        <h3>Advice/Suggestion/Investigation.</h3>
-        <textarea
-          style={{
-            width: "100%", // Changed to 100% to fit parent div's width
-            height: 100,
-            border: "1px solid #199FD9",
-            backgroundColor: "white",
-            maxHeight: "200px",
-            overflowY: "auto",
-            padding: "8px", // Added some padding for better aesthetics
-            boxSizing: "border-box", // Ensures padding is included in width/height
-            resize: "vertical", // Allow vertical resizing by user if desired
-          }}
-          value={adviceText}
-          onChange={(e) => {
-            // Renamed 'txt' to 'e' (common convention for event object)
-            if (e.target.value.length <= MAX_CHARS) {
-              // Check length of the new value
-              setAdviceText(e.target.value); // ONLY set the value if it's within limits
-            }
-            // The second setAdviceText(txt.target.value) here was redundant and problematic.
-            // It's removed to ensure the conditional logic works as intended.
-          }}
-          rows={4}
-          cols={50} // cols becomes less relevant if width is set by CSS
-          placeholder="Enter your advice, suggestion, or investigation details here..."
-          maxLength={MAX_CHARS} // *** Added: HTML attribute for character limit ***
-        ></textarea>
-
-        {/* Character Limit Display */}
+      {hasTreatments && (
         <div
           style={{
-            position: "absolute",
-            bottom: 5, // Adjust as needed for vertical position
-            right: 5, // Adjust as needed for horizontal position
-            fontSize: "0.8em", // Smaller font size
-            color: currentChars === MAX_CHARS ? "red" : "#666", // Red when limit reached
-            backgroundColor: "rgba(255, 255, 255, 0.7)", // Slight translucent background
-            padding: "2px 5px",
-            borderRadius: "3px",
-            pointerEvents: "none", // Allows clicks/interactions to pass through to textarea if needed
+            display: "flex",
+            flexDirection: "column",
+            marginTop: 10,
+            marginBottom: 20,
+            position: "relative", // Added for positioning the char count
+            width: "60%", // Set width here to contain both textarea and char count
           }}
         >
-          {currentChars}/{MAX_CHARS}
+          <h3>Advice/Suggestion/Investigation.</h3>
+          <textarea
+            style={{
+              width: "100%", // Changed to 100% to fit parent div's width
+              height: 100,
+              border: "1px solid #199FD9",
+              backgroundColor: "white",
+              maxHeight: "200px",
+              overflowY: "auto",
+              padding: "8px", // Added some padding for better aesthetics
+              boxSizing: "border-box", // Ensures padding is included in width/height
+              resize: "vertical", // Allow vertical resizing by user if desired
+            }}
+            value={adviceText}
+            onChange={(e) => {
+              // Renamed 'txt' to 'e' (common convention for event object)
+              if (e.target.value.length <= MAX_CHARS) {
+                // Check length of the new value
+                setAdviceText(e.target.value); // ONLY set the value if it's within limits
+              }
+              // The second setAdviceText(txt.target.value) here was redundant and problematic.
+              // It's removed to ensure the conditional logic works as intended.
+            }}
+            rows={4}
+            cols={50} // cols becomes less relevant if width is set by CSS
+            placeholder="Enter your advice, suggestion, or investigation details here..."
+            maxLength={MAX_CHARS} // *** Added: HTML attribute for character limit ***
+          ></textarea>
+
+          {/* Character Limit Display */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: 5, // Adjust as needed for vertical position
+              right: 5, // Adjust as needed for horizontal position
+              fontSize: "0.8em", // Smaller font size
+              color: currentChars === MAX_CHARS ? "red" : "#666", // Red when limit reached
+              backgroundColor: "rgba(255, 255, 255, 0.7)", // Slight translucent background
+              padding: "2px 5px",
+              borderRadius: "3px",
+              pointerEvents: "none", // Allows clicks/interactions to pass through to textarea if needed
+            }}
+          >
+            {currentChars}/{MAX_CHARS}
+          </div>
         </div>
-      </div>
+      )}
 
       {hasTreatments && (
         <div className="mt-6 text-center">
@@ -921,6 +981,70 @@ const PendingPrescpt = ({ id }) => {
                 </datalist>
               </Form.Group>
 
+              {/* <Form.Group className="mb-3" controlId="formNewMedicineName"> */}
+              {/* <Form.Label className="font-semibold text-gray-700">
+                  Medicine Name*
+                </Form.Label> */}
+
+              {/* Display the selected medicine name (from newTreatment.medicine_name) */}
+              {/* {currentTreatment.medicine_name ? (
+                  <div className="mb-2 p-2 border border-blue-500 rounded-md bg-blue-50 flex justify-between items-center">
+                    <span>{currentTreatment.medicine_name}</span>
+                    <Button
+                      variant="link"
+                      onClick={() => handleSelectMedicineUpdate("")}
+                      className="p-0 text-red-500 text-sm"
+                    >
+                      (Change)
+                    </Button>
+                  </div>
+                ) : null} */}
+
+              {/* 1. The Search Box */}
+              {/* The input is only visible if a medicine hasn't been selected or if the user clicks "Change" */}
+              {/* {currentTreatment.medicine_name &&
+                searchTermUpdate === "" ? null : (
+                  <Form.Control
+                    type="text"
+                    placeholder="Search for a Medicine"
+                    value={currentTreatment}
+                    onChange={handleSearchChange}
+                    className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    // Add a small delay for search filtering if your list is huge
+                    // onKeyUp={(e) => { if (e.key === 'Enter') setSearchTerm(e.target.value); }}
+                  />
+                )} */}
+
+              {/* 2. The Search Results Dropdown List */}
+              {/* Show results only if we have a search term and a medicine hasn't been selected */}
+              {/* {searchTermUpdate && currentTreatment.medicine_name === "" && (
+                  <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto mt-1">
+                    {filteredMedicines.length > 0 ? (
+                      <ul className="list-none p-0 m-0">
+                        {filteredMedicines.slice(0, 10).map((medicine) => (
+                          <li
+                            key={medicine.product_code}
+                            onClick={() =>
+                              handleSelectMedicine(medicine.product_name)
+                            }
+                            className="p-2 cursor-pointer hover:bg-blue-100"
+                          >
+                            {medicine.product_name}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <div className="p-2 text-gray-500">
+                        {searchTermUpdate.length > 0
+                          ? "No results found."
+                          : "Start typing to search..."}
+                      </div>
+                    )}
+                  </div>
+                )} */}
+              {/* </Form.Group> */}
+
+              {/* update code modal */}
               <Form.Group className="mb-3" controlId="formUnit">
                 <Form.Label className="font-semibold text-gray-700">
                   Unit*
@@ -1098,7 +1222,7 @@ const PendingPrescpt = ({ id }) => {
         </Modal.Header>
         <Modal.Body className="p-6 bg-gray-50">
           <Form>
-            <Form.Group className="mb-3" controlId="formNewMedicineName">
+            {/* <Form.Group className="mb-3" controlId="formNewMedicineName">
               <Form.Label className="font-semibold text-gray-700">
                 Medicine Name*
               </Form.Label>
@@ -1124,6 +1248,68 @@ const PendingPrescpt = ({ id }) => {
                   </option>
                 )}
               </Form.Select>
+            </Form.Group> */}
+
+            <Form.Group className="mb-3" controlId="formNewMedicineName">
+              <Form.Label className="font-semibold text-gray-700">
+                Medicine Name*
+              </Form.Label>
+
+              {/* Display the selected medicine name (from newTreatment.medicine_name) */}
+              {newTreatment.medicine_name ? (
+                <div className="mb-2 p-2 border border-blue-500 rounded-md bg-blue-50 flex justify-between items-center">
+                  <span> {newTreatment.medicine_name}</span>
+                  <Button
+                    variant="link"
+                    onClick={() => handleSelectMedicine("")}
+                    className="p-0 text-red-500 text-sm"
+                  >
+                    (Change)
+                  </Button>
+                </div>
+              ) : null}
+
+              {/* 1. The Search Box */}
+              {/* The input is only visible if a medicine hasn't been selected or if the user clicks "Change" */}
+              {newTreatment.medicine_name && searchTerm === "" ? null : (
+                <Form.Control
+                  type="text"
+                  placeholder="Search for a Medicine"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                  // Add a small delay for search filtering if your list is huge
+                  // onKeyUp={(e) => { if (e.key === 'Enter') setSearchTerm(e.target.value); }}
+                />
+              )}
+
+              {/* 2. The Search Results Dropdown List */}
+              {/* Show results only if we have a search term and a medicine hasn't been selected */}
+              {searchTerm && newTreatment.medicine_name === "" && (
+                <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto mt-1">
+                  {filteredMedicines.length > 0 ? (
+                    <ul className="list-none p-0 m-0">
+                      {filteredMedicines.slice(0, 10).map((medicine) => (
+                        <li
+                          key={medicine.product_code}
+                          onClick={() =>
+                            handleSelectMedicine(medicine.product_name)
+                          }
+                          className="p-2 cursor-pointer hover:bg-blue-100"
+                        >
+                          {medicine.product_name}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className="p-2 text-gray-500">
+                      {searchTerm.length > 0
+                        ? "No results found."
+                        : "Start typing to search..."}
+                    </div>
+                  )}
+                </div>
+              )}
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formNewUnit">
