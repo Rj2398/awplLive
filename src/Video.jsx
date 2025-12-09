@@ -1345,7 +1345,7 @@ const Video = ({ isCameraOn, isMuted, patientInfo }) => {
           backgroundColor: "#0c0d0f",
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: "10px",
+          // gap: "10px",
           overflowY: "auto",
           justifyContent: "center",
           alignContent: "center",
@@ -1486,3 +1486,4 @@ const Video = ({ isCameraOn, isMuted, patientInfo }) => {
 };
 
 export default Video;
+
