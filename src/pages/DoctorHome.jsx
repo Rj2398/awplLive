@@ -525,11 +525,21 @@ const DoctorHome = () => {
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState("");
 
-  useEffect(() => {
-    if (modaleOpen && appointmentIdd && localStorageModal != "1") {
+  // useEffect(() => {
+  //   if (modaleOpen && appointmentIdd && localStorageModal != "1") {
+  //     setShowRatingModal(true);
+  //   }
+  // }, [modaleOpen, appointmentIdd]);
+
+
+    useEffect(() => {
+    const alreadyShown = localStorage.getItem("ratingPopupShown");
+
+    if (!alreadyShown && modaleOpen && appointmentIdd) {
       setShowRatingModal(true);
+      localStorage.setItem("ratingPopupShown", "1");
     }
-  }, [modaleOpen, appointmentIdd]);
+  }, []);
 
   const handleRatingSubmit = () => {
     dispatch(
@@ -1246,3 +1256,4 @@ const DoctorHome = () => {
 };
 
 export default DoctorHome;
+
