@@ -349,6 +349,8 @@ import baseUrl from "../../config/BaseUrl";
 import BaseUrl from "../../config/Constant";
 
 const Header = () => {
+  const { invitedUser } = useSelector(({ info }) => info);
+
   const [showModal, setShowModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isHod, setIsHod] = useState(false);
@@ -631,7 +633,9 @@ const Header = () => {
             cursor: "pointer",
           }}
         >
-          <img src="/images/bars.svg" alt="Menu" />
+          {invitedUser?.data?.type === "admin" ? null : (
+            <img src="/images/bars.svg" alt="Menu" />
+          )}
         </button>
         <div className="logo">
           <Link to="/doctor-home">
@@ -639,34 +643,38 @@ const Header = () => {
           </Link>
         </div>
         <div className="notifications">
-          <Link to="/notifications">
-            <img src="/images/notification-icon-2.svg" alt="Notification" />
-          </Link>
-          {/* {unreadCounts > 0 && <span></span>} */}
-
-          {count > 0 && (
-            <div
-              style={{
-                backgroundColor: "red",
-                width: count > 9 ? "25px" : "20px",
-                height: "20px",
-                borderRadius: "10px",
-                color: "white",
-                position: "absolute",
-                top: -10,
-                right: 0,
-              }}
-            >
-              <p
-                style={{
-                  fontWeight: "bold",
-                  marginLeft: 5,
-                }}
-              >
-                {count > 9 ? "9+" : count}
-              </p>
-            </div>
+          {invitedUser?.data?.type === "admin" ? null : (
+            <Link to="/notifications">
+              <img src="/images/notification-icon-2.svg" alt="Notification" />
+            </Link>
           )}
+
+          {/* {unreadCounts > 0 && <span></span>} */}
+          {invitedUser?.data?.type === "admin"
+            ? null
+            : count > 0 && (
+                <div
+                  style={{
+                    backgroundColor: "red",
+                    width: count > 9 ? "25px" : "20px",
+                    height: "20px",
+                    borderRadius: "10px",
+                    color: "white",
+                    position: "absolute",
+                    top: -10,
+                    right: 0,
+                  }}
+                >
+                  <p
+                    style={{
+                      fontWeight: "bold",
+                      marginLeft: 5,
+                    }}
+                  >
+                    {count > 9 ? "9+" : count}
+                  </p>
+                </div>
+              )}
 
           {/* If count is 0, then check unreadCounts */}
           {count === 0 && unreadCounts > 0 && (

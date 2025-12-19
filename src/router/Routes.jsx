@@ -52,6 +52,7 @@ import PrivateRoute from "./PrivateRoute";
 import PendingAssignedPrescriptionDetails from "../component/doctorPanel/PendingAssignedPrescriptionDetails";
 
 import PrescriptiveDoctor from "../pages/PrescriptiveDoctor";
+import InvitedUserJoin from "../pages/InvitedUserJoin";
 
 function Routers() {
   return (
@@ -219,7 +220,7 @@ function Routers() {
             </PrivateRoute>
           }
         />
- 
+
         <Route
           path="/doctorUnavailibility"
           element={
@@ -229,7 +230,7 @@ function Routers() {
               </Layout>
             </PrivateRoute>
           }
-        /> 
+        />
 
         <Route
           path="/hod"
@@ -240,7 +241,7 @@ function Routers() {
               </Layout>
             </PrivateRoute>
           }
-        /> 
+        />
         <Route path="/create-password" element={<CreatePassword />} />
         {/* <Route path="/startappointment" element={<StartAppointment />} /> */}
         {/* <Route path="/patientprofile" element={<PatientProfile />} /> */}
@@ -265,6 +266,16 @@ function Routers() {
             <PrivateRoute>
               <Layout>
                 <MyAppointments />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/invited-user-join/:id"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <InvitedUserJoin />
               </Layout>
             </PrivateRoute>
           }

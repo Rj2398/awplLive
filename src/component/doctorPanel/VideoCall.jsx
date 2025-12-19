@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Video from "../../Video";
 import Header from "../doctorPanel/Header";
-
+import {
+  PiSpeakerSimpleHighFill,
+  PiSpeakerSimpleSlashFill,
+} from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import {
@@ -14,14 +17,30 @@ import { getPatientProfileData } from "../../redux/slices/patientProfileSlice";
 import { videoCallSubmit } from "../../redux/slices/dataSlice";
 import axios from "axios";
 import baseUrl from "../../config/BaseUrl";
+import { CiVolumeHigh } from "react-icons/ci";
+import { setInvitedUserData } from "../../redux/slices/infoSlice";
 
 const VideoCall = () => {
   const navigate = useNavigate();
 
+  const doctorData = localStorage.getItem("doctor-app");
+
+  console.log(doctorData, "doctorDatadoctorDatadoctorData");
+
+  const [isVolumeBoosted, setIsVolumeBoosted] = useState(false);
+  const [remoteAudioOn, setRemoteAudioOn] = useState(false);
+
   const [isMuted, setIsMuted] = useState(false);
   const [isCameraOn, setIsCameraOn] = useState(true);
+  // const toggleVolumeBoost = () => {
+  //   setIsVolumeBoosted((prev) => !prev);
+  // };
 
   //
+
+  const toggleRemoteAudio = () => {
+    setRemoteAudioOn((prev) => !prev);
+  };
 
   const [isPrescriptionDone, setIsPrescriptionDone] = useState(false);
 
@@ -30,11 +49,24 @@ const VideoCall = () => {
   //
   const videoStreamRef = useRef(null);
   const location = useLocation();
-  const { id, patientId, time_period } = location.state || {};
+  const { id, patientId, time_period, ObjNavigate, userRole } =
+    location.state || {};
+  console.log(
+    id,
+    patientId,
+    time_period,
+    ObjNavigate,
+    userRole,
+    "user role of this ***"
+  );
   const suggestionsRefs = useRef([]);
   const dispatch = useDispatch();
 
   const { patientProfileData } = useSelector((state) => state.patientProfile);
+
+  const { invitedUser } = useSelector(({ info }) => info);
+
+  console.log(invitedUser, "data comes from invited user");
   // const time_period11 = "12:45 - 01:00 PM";
   // console.log(time_period, "time period*****");
 
@@ -195,7 +227,11 @@ const VideoCall = () => {
     }
   }, [dispatch, patientId]);
 
-  const patientInfo = patientProfileData?.basic_information || {};
+  const patientInfo =
+    patientProfileData?.basic_information ||
+    invitedUser?.data?.basic_information ||
+    {};
+
   const {
     completeAssignedPrescription,
     loading,
@@ -427,13 +463,23 @@ const VideoCall = () => {
 
   // const handleEndCall = () => navigate("/doctor-home");
 
-  const handleEndCall = (id) =>
-    navigate("/doctor-home", {
-      state: {
-        appointmentIdd: id,
-        modaleOpen: true,
-      },
-    });
+  const handleEndCall = (id) => {
+    if (userRole === "admin") {
+      //
+      navigate("/login");
+
+      localStorage.removeItem("anyoneJoin");
+
+      dispatch(setInvitedUserData(null));
+    } else {
+      navigate("/doctor-home", {
+        state: {
+          appointmentIdd: id,
+          modaleOpen: true,
+        },
+      });
+    }
+  };
 
   // const formatTime = (totalSeconds) => {
   //   const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
@@ -615,13 +661,81 @@ const VideoCall = () => {
                       </div>
                     </div>
                   </div>
+                  <button
+                    onClick={toggleRemoteAudio}
+                    style={{
+                      position: "absolute",
+                      bottom: "40px",
+                      left: "20px",
+                      right: "20px",
+                      zIndex: 9999999999999, // High z-index to sit on top of everything
+                      color: "white",
+                      border: "none",
+                      borderRadius: "50%",
+                      width: "50px",
+                      height: "50px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      boxShadow: remoteAudioOn
+                        ? "0 0 10px #28a745"
+                        : "0 2px 5px rgba(0,0,0,0.5)",
+                      backgroundColor: remoteAudioOn
+                        ? "#28a745"
+                        : "rgba(255,255,255,0.2)",
+                      transition: "all 0.3s ease",
+                    }}
+                    title={
+                      remoteAudioOn ? "Turn off Volume Boost" : "Boost Volume"
+                    }
+                  >
+                    <CiVolumeHigh size={24} />
+                  </button>
+                  {/* 
+                  <button
+                    onClick={toggleRemoteAudio}
+                    style={{
+                      position: "absolute",
+                      bottom: "40px",
+                      left: "20px",
+                      width: "48px",
+                      height: "48px",
+                      backgroundColor: remoteAudioOn ? "#fff" : "#f00", // Red when muted
+                      color: remoteAudioOn ? "#000" : "#fff",
+                      borderRadius: "50%",
+                      cursor: "pointer",
+                      zIndex: 9999,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      border: "none",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.6)",
+                    }}
+                    title={
+                      remoteAudioOn
+                        ? "Mute Remote Audio"
+                        : "Unmute Remote Audio"
+                    }
+                  >
+                    {remoteAudioOn ? (
+                      <PiSpeakerSimpleHighFill size={24} />
+                    ) : (
+                      <PiSpeakerSimpleSlashFill size={24} />
+                    )}
+                  </button> */}
 
                   <div className="patient-vdo-screen">
                     {/* <img src="./images/patient-video-thumb.png" alt="Patient Video Thumbnail" /> */}
                     <Video
                       isCameraOn={isCameraOn}
                       isMuted={isMuted}
-                      patientInfo={patientInfo.name}
+                      patientInfo={
+                        patientInfo.name || invitedUser?.basic_information?.name
+                      }
+                      videoStreamRef={videoStreamRef}
+                      remoteAudioOn={remoteAudioOn}
+                      ObjNavigate={ObjNavigate}
                     />
                   </div>
                 </div>
@@ -690,14 +804,16 @@ const VideoCall = () => {
                             }
                           }}
                         >
-                          <button
-                            type="button"
-                            className="orange-btn"
-                            style={buttonStyle}
-                            disabled={isPrescriptionDone}
-                          >
-                            Go for Prescription
-                          </button>
+                          {userRole === "admin" ? null : (
+                            <button
+                              type="button"
+                              className="orange-btn"
+                              style={buttonStyle}
+                              disabled={isPrescriptionDone}
+                            >
+                              Go for Prescription
+                            </button>
+                          )}
                         </a>
                       </div>
                     </div>

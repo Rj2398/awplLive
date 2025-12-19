@@ -4,10 +4,23 @@ import { toast } from "react-toastify";
 
 // For Unauthenticated User
 function logouterror() {
-  toast.error("Token Expired");
+  // toast.error("Token Expired");
+  // localStorage.removeItem("doctor-app");
+  // setTimeout(() => {
+  //   // window.location.href = "/";
+  // }, 1000);
+
+  const anyoneJoin = localStorage.getItem("anyoneJoin");
   localStorage.removeItem("doctor-app");
+  if (!anyoneJoin) {
+    // toast.error("Token Expired");
+  } else {
+    toast.error("Token Expired");
+  }
+
+  localStorage.removeItem("nfc-admin");
   setTimeout(() => {
-    window.location.href = "/";
+    !anyoneJoin ? (window.location.href = "/") : null;
   }, 1000);
 }
 

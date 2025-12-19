@@ -4,10 +4,20 @@ import { toast } from "react-toastify";
 
 // For Unauthenticated User
 function logouterror() {
-  toast.error("Token Expired");
-  localStorage.removeItem("doctor-app");
+  // toast.error("Token Expired");
+  // localStorage.removeItem("doctor-app");
+  // setTimeout(() => {
+  //   // window.location.href = "/";
+  // }, 1000);
+  const toastMsg = localStorage.removeItem("doctor-app");
+  const anyoneJoin = localStorage.getItem("anyoneJoin");
+  if (!anyoneJoin && !toastMsg) {
+    toast.error("Token Expired");
+  }
+
+  localStorage.removeItem("nfc-admin");
   setTimeout(() => {
-    window.location.href = "/";
+    !anyoneJoin ? (window.location.href = "/") : null;
   }, 1000);
 }
 

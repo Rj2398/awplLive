@@ -46,8 +46,9 @@ const DoctorHome = () => {
   // const {userdata, loading} = useSelector((state) => state.dataSlice)
   const { userdata, loading, error } = useSelector((state) => state.userdata);
   const { appointmentIdd, modaleOpen } = location.state || {};
+
   const { channelDetails } = useSelector((state) => state.appointments);
-  // console.log(channelDetails, "jfaklshfsahdfks");
+  // console.log(appointmentIdd, modaleOpen, "jfaklshfsahdfks");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { feedbackSubmit, feedbackLoading } = useSelector(
     (state) => state.patientProfile
@@ -531,8 +532,7 @@ const DoctorHome = () => {
     }
   }, [modaleOpen, appointmentIdd]);
 
-
-  //   useEffect(() => {
+  // useEffect(() => {
   //   const alreadyShown = localStorage.getItem("ratingPopupShown");
 
   //   if (!alreadyShown && modaleOpen && appointmentIdd) {
@@ -1256,5 +1256,3 @@ const DoctorHome = () => {
 };
 
 export default DoctorHome;
-
-
